@@ -59,7 +59,7 @@ echo     [v] Tu dong quet tim game tren moi o dia (C:, D:, E:, ...).
 echo     [v] TdrDelay = 30 giay (GPU load nang khong bao gio bi Windows kill).
 echo     [v] Ep chuyen sang DirectX 11 on dinh (Loai bo loi D3D12).
 echo     [v] Xoa sach Shader Cache bi loi cua AMD.
-echo     [v] Giai phong RAM tu BlueStacks, WSL & VMware.
+echo     [v] Giai phong RAM tu BlueStacks, WSL va VMware.
 echo.
 echo   -> Bay gio ban co the mo Riot Client va vao game choi thoai mai!
 echo ====================================================================
