@@ -214,3 +214,5 @@ Write-Host "`n==================================================================
 Write-Host "   HOAN TAT TOAN BO CAU HINH! HE THONG DA DUOC TOI UU CHO DTCL" -ForegroundColor Cyan
 Write-Host "   Ban co the mo Riot Client va vao game thuong thuc mượt ma!" -ForegroundColor Cyan
 Write-Host "=========================================================================`n" -ForegroundColor Cyan
+
+Read-Host 'Nhan phim ENTER de thoat'

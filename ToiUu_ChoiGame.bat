@@ -64,4 +64,5 @@ echo.
 echo   -> Bay gio ban co the mo Riot Client va vao game choi thoai mai!
 echo ====================================================================
 echo.
-timeout /t 5
+echo Nhan phim ENTER de thoat...
+pause >nul
