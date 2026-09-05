@@ -41,41 +41,89 @@ Sau khi nhóm kỹ thuật trích xuất và giải mã hàng trăm dòng nhật
 
 ---
 
-## 🚀 HƯỚNG DẪN KHẮC PHỤC 1-CLICK (Dành cho anh em thích nhanh gọn)
+## 🚀 HƯỚNG DẪN CÀI ĐẶT & SỬ DỤNG TỪ ĐẦU (GETTING STARTED)
 
-Tôi đã tạo sẵn một công cụ tự động từ A-Z giúp anh em khắc phục triệt để chỉ với 1 cú nhấp chuột.
-
-### Bước 1: Tải công cụ về máy
-* Tải tệp **[`ToiUu_ChoiGame.bat`](https://raw.githubusercontent.com/HTP8888/tft-anti-crash-optimizer/main/ToiUu_ChoiGame.bat)** về máy tính (hoặc tải toàn bộ kho lưu trữ này dưới dạng file `.zip`).
-* Lưu tệp này ra ngoài **Màn hình chính (Desktop)** để dùng lâu dài.
-
-### Bước 2: Chạy công cụ
-* Nhấp chuột phải vào file `ToiUu_ChoiGame.bat` $\rightarrow$ chọn **Run as Administrator** (Chạy với quyền quản trị viên).
-* Nếu có hộp thoại Windows hiện lên, bạn chỉ cần bấm **Yes**.
-
-### Bước 3: Xem kết quả và vào game
-Công cụ sẽ tự động làm sạch trong 3 giây:
-* ✅ **Khóa cứng DirectX 11 thuần** vào tận nhân động cơ game ĐTCL (ngăn game tự quay lại DirectX 12).
-* ✅ **Tăng thời gian chịu tải ngắt card của Windows từ 2s lên 30s** (không bao giờ sợ Windows tự ngắt card khi load game).
-* ✅ **Tự động xóa sạch rác bộ nhớ đệm Shader bị lỗi** của AMD (`DxcCache` & `DxCache`).
-* ✅ **Dọn dẹp các tiến trình máy ảo kẹt ngầm**, giải phóng ngay 6 - 8 GB RAM cho card onboard.
-* Sau khi màn hình đen tự tắt, bạn chỉ việc bật Riot Client lên và vào trận ĐTCL mượt mà!
+Bạn có thể lựa chọn 1 trong 3 cách sau để cài đặt và kích hoạt bộ tối ưu trên máy của mình:
 
 ---
 
-## 🛠️ HƯỚNG DẪN TỰ SỬA BẰNG TAY (Dành cho anh em thích tự vọc)
+### 🟢 Cách 1: Tải nhanh 1-Click (Dành cho anh em muốn nhanh gọn, không cần cài Git)
 
-Nếu bạn không muốn chạy tool tự động mà muốn tự thao tác trên máy mình, hãy làm theo 3 bước sau:
+1. **Tải file công cụ về máy:**
+   * Nhấp chuột vào link tải trực tiếp file: **[`ToiUu_ChoiGame.bat`](https://raw.githubusercontent.com/HTP8888/tft-anti-crash-optimizer/main/ToiUu_ChoiGame.bat)** $\rightarrow$ bấm `Ctrl + S` để lưu về máy.
+   * Hoặc ở đầu trang GitHub này, bấm vào nút màu xanh **`Code`** $\rightarrow$ chọn **`Download ZIP`** $\rightarrow$ giải nén thư mục ra.
+2. **Đưa ra màn hình chính:**
+   * Sao chép tệp `ToiUu_ChoiGame.bat` ra ngoài **Desktop (Màn hình chính)** để tiện dùng mỗi khi chơi game.
+3. **Kích hoạt:**
+   * Nhấp chuột phải vào `ToiUu_ChoiGame.bat` $\rightarrow$ chọn **Run as Administrator** (Chạy với quyền Quản trị viên).
+   * Bấm **Yes** khi hộp thoại Windows hiện lên hỏi quyền Admin.
+4. **Xong!**
+   * Công cụ tự động quét tìm thư mục game trên mọi ổ đĩa (C:, D:, E:...), khóa DirectX 11, dọn sạch Shader lỗi của AMD và nâng thời gian chờ GPU lên 30 giây trong vòng 3 giây.
+   * Cửa sổ tự tắt, bạn mở Riot Client và bắt đầu vào trận ĐTCL!
 
-### 1. Tối ưu phần mềm AMD Software: Adrenalin Edition
-Card tích hợp AMD được quản lý bởi phần mềm này. Bạn mở ứng dụng lên và chỉnh 2 mục:
+---
+
+### 🔵 Cách 2: Sử dụng lệnh Git & PowerShell (Dành cho Developer / Game thủ thích dùng dòng lệnh)
+
+Dành cho những bạn đã cài đặt **Git** trên máy và muốn clone repository về để quản lý hoặc chạy script tự động:
+
+#### Bước 1: Mở Terminal dưới quyền Administrator
+* Nhấn phím `Windows + S`, gõ `PowerShell` (hoặc `cmd`).
+* Nhấp chuột phải vào **Windows PowerShell** $\rightarrow$ chọn **Run as Administrator**.
+
+#### Bước 2: Clone kho lưu trữ về máy
+Chạy dòng lệnh sau để tải toàn bộ mã nguồn về máy:
+```bash
+git clone https://github.com/HTP8888/tft-anti-crash-optimizer.git
+```
+
+#### Bước 3: Di chuyển vào thư mục dự án
+```bash
+cd tft-anti-crash-optimizer
+```
+
+#### Bước 4: Thực thi công cụ tối ưu
+Bạn có thể chọn 1 trong 2 cách chạy dòng lệnh sau:
+
+* **Lựa chọn 2A - Chạy file Batch tự động:**
+  ```cmd
+  .\ToiUu_ChoiGame.bat
+  ```
+
+* **Lựa chọn 2B - Chạy kịch bản PowerShell tự động quét ổ đĩa:**
+  ```powershell
+  powershell -ExecutionPolicy Bypass -File .\Setup_DX11_Optimizer.ps1
+  ```
+
+> [!TIP]
+> **Nếu bạn cài đặt game ở một thư mục đặc biệt riêng** (không nằm ở các đường dẫn mặc định của Riot Games), bạn có thể truyền thẳng đường dẫn đó vào script:
+> ```powershell
+> powershell -ExecutionPolicy Bypass -File .\Setup_DX11_Optimizer.ps1 -CustomPath "D:\ThuMucCuaBan\Teamfight Tactics\Live"
+> ```
+
+Sau khi terminal hiển thị dòng chữ:
+```text
+=========================================================================
+   HOAN TAT TOAN BO CAU HINH! HE THONG DA DUOC TOI UU CHO DTCL
+=========================================================================
+```
+Toàn bộ hệ thống đã được đồng bộ chuẩn, bạn có thể mở game và trải nghiệm ngay!
+
+---
+
+### 🟡 Cách 3: Hướng dẫn tự cấu hình thủ công bằng tay
+
+Nếu bạn muốn tự mình kiểm tra và chỉnh từng bước trên máy:
+
+#### 1. Tối ưu phần mềm AMD Software: Adrenalin Edition
+Card tích hợp AMD được quản lý bởi phần mềm này. Mở ứng dụng lên và chỉnh 2 mục sau:
 1. **Tắt Overlay:** Vào biểu tượng **Bánh răng (Cài đặt)** góc trên bên phải $\rightarrow$ Tab **Preferences** $\rightarrow$ Gạt nút **In-Game Overlay** sang **Disabled (Tắt)**.
 2. **Xóa Shader cũ:** Vào Tab **Gaming** $\rightarrow$ Mục **Graphics**:
    * Đặt **Graphics Profile** thành **Default (Tiêu chuẩn)**.
    * Tắt các mục: *Radeon Anti-Lag*, *Radeon Boost*, *Radeon Enhanced Sync*.
    * Cuộn xuống dưới cùng, nhấp vào dòng **Advanced** $\rightarrow$ tìm dòng **Reset Shader Cache** $\rightarrow$ bấm nút **Perform Reset**.
 
-### 2. Tăng thời gian chờ cho Windows (Chống đơ 2s)
+#### 2. Tăng thời gian chờ cho Windows (Chống đơ 2s)
 1. Nhấn tổ hợp phím `Windows + X` $\rightarrow$ chọn **Terminal (Admin)** hoặc **PowerShell (Admin)**.
 2. Dán 2 dòng lệnh sau vào rồi nhấn **Enter**:
    ```powershell
@@ -83,8 +131,8 @@ Card tích hợp AMD được quản lý bởi phần mềm này. Bạn mở ứ
    Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers" -Name "TdrDdiDelay" -Value 30 -Type DWord
    ```
 
-### 3. Ép bản ĐTCL chạy chế độ DirectX 11
-1. Mở thư mục cài đặt ĐTCL: `E:\Riot Games\Teamfight Tactics\Live\Engine\Config\BaseEngine.ini` (hoặc ổ đĩa bạn cài game).
+#### 3. Ép bản ĐTCL chạy chế độ DirectX 11
+1. Mở thư mục cài đặt ĐTCL: `BaseEngine.ini` (thường nằm tại `<Ổ đĩa cài game>\Riot Games\Teamfight Tactics\Live\Engine\Config\BaseEngine.ini`).
 2. Mở file `BaseEngine.ini` bằng Notepad, tìm dòng `[/Script/WindowsTargetPlatform.WindowsTargetSettings]` và chèn thêm:
    ```ini
    DefaultGraphicsRHI=DefaultGraphicsRHI_DX11
