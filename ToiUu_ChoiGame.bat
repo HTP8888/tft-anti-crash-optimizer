@@ -2,10 +2,11 @@
 chcp 65001 >nul
 title TOI UU VA CUU HO TREO GAME DTCL (TFT)
 
-:: Tu dong yeu cau quyen Administrator neu chua co
+:: 1. Tu dong yeu cau quyen Administrator (Su dung duong dan 8.3 ngan gon de chong loi tieng Viet co dau nhu "May tinh")
 net session >nul 2>&1
 if %errorLevel% neq 0 (
-    powershell -NoProfile -ExecutionPolicy Bypass -Command "Start-Process cmd -ArgumentList '/c \"\"%~f0\"\"' -Verb RunAs"
+    echo Dang yeu cau quyen Administrator...
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "Start-Process cmd -ArgumentList '/c `\"%~s0`\"' -Verb RunAs"
     exit /b
 )
 
@@ -48,45 +49,7 @@ taskkill /F /IM MetaTFT.exe >nul 2>&1
 
 :: 5. Tu dong quet tat ca o dia (C, D, E, ...) va khoa DirectX 11 vao Engine cua TFT
 echo [5/5] Dang tu dong tim thu muc game tren moi o dia va khoa DirectX 11...
-powershell -NoProfile -ExecutionPolicy Bypass -Command "& {
-    $yamlPath = 'C:\ProgramData\Riot Games\Metadata\teamfighttactics.live\teamfighttactics.live.product_settings.yaml';
-    $tftPath = $null;
-    if (Test-Path $yamlPath) {
-        $line = Get-Content $yamlPath | Select-String 'product_install_full_path:';
-        if ($line -match 'product_install_full_path:\s*\"(.*)\"') {
-            $p = $matches[1].Replace('/', '\');
-            if (Test-Path \"$p\Engine\Config\BaseEngine.ini\") { $tftPath = $p }
-        }
-    }
-    if (-not $tftPath) {
-        $drives = (Get-CimInstance Win32_LogicalDisk -Filter 'DriveType=3').DeviceID;
-        foreach ($d in $drives) {
-            $p = \"$d\Riot Games\Teamfight Tactics\Live\";
-            if (Test-Path \"$p\Engine\Config\BaseEngine.ini\") { $tftPath = $p; break }
-        }
-    }
-    if ($tftPath) {
-        $base = Join-Path $tftPath 'Engine\Config\BaseEngine.ini';
-        $c = Get-Content $base -Raw;
-        $modified = $false;
-        if ($c -notmatch 'DefaultGraphicsRHI=DefaultGraphicsRHI_DX11') {
-            $c = $c.Replace('[/Script/WindowsTargetPlatform.WindowsTargetSettings]', \"[/Script/WindowsTargetPlatform.WindowsTargetSettings]`r`nDefaultGraphicsRHI=DefaultGraphicsRHI_DX11\");
-            $modified = $true;
-        }
-        if ($c -notmatch 'r\.RHIName=D3D11') {
-            $c = $c.Replace(\"[SystemSettings]`r`n\", \"[SystemSettings]`r`nr.RHIName=D3D11`r`nr.D3D12.Enable=0`r`n\");
-            $modified = $true;
-        }
-        if ($modified) { Set-Content -Path $base -Value $c -NoNewline }
-    }
-    $iniPath = \"$env:LOCALAPPDATA\TFT\Saved\Config\WindowsClient\Engine.ini\";
-    $parent = Split-Path $iniPath;
-    if (-not (Test-Path $parent)) { New-Item -ItemType Directory -Path $parent -Force | Out-Null };
-    if (Test-Path $iniPath) { Set-ItemProperty -Path $iniPath -Name IsReadOnly -Value $false };
-    $iniText = \"[/Script/WindowsTargetPlatform.WindowsTargetSettings]`r`nDefaultGraphicsRHI=DefaultGraphicsRHI_DX11`r`n`r`n[SystemSettings]`r`nr.RHIName=D3D11`r`nr.D3D12.Enable=0`r`n`r`n[GameNetDriver StatelessConnectHandlerComponent]`r`nCachedClientID=4\";
-    Set-Content -Path $iniPath -Value $iniText -Encoding UTF8;
-    Set-ItemProperty -Path $iniPath -Name IsReadOnly -Value $true;
-}" >nul 2>&1
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$yaml = 'C:\ProgramData\Riot Games\Metadata\teamfighttactics.live\teamfighttactics.live.product_settings.yaml'; $tft = $null; if (Test-Path $yaml) { $l = Get-Content $yaml | Select-String 'product_install_full_path:'; if ($l -match 'product_install_full_path:\s*\"(.*)\"') { $p = $matches[1].Replace('/','\'); if (Test-Path \"$p\Engine\Config\BaseEngine.ini\") { $tft = $p } } }; if (-not $tft) { $drives = (Get-CimInstance Win32_LogicalDisk -Filter 'DriveType=3').DeviceID; foreach ($d in $drives) { $p = \"$d\Riot Games\Teamfight Tactics\Live\"; if (Test-Path \"$p\Engine\Config\BaseEngine.ini\") { $tft = $p; break } } }; if ($tft) { $base = Join-Path $tft 'Engine\Config\BaseEngine.ini'; $c = Get-Content $base -Raw; $m = $false; if ($c -notmatch 'DefaultGraphicsRHI=DefaultGraphicsRHI_DX11') { $c = $c.Replace('[/Script/WindowsTargetPlatform.WindowsTargetSettings]', \"[/Script/WindowsTargetPlatform.WindowsTargetSettings]`r`nDefaultGraphicsRHI=DefaultGraphicsRHI_DX11\"); $m = $true }; if ($c -notmatch 'r\.RHIName=D3D11') { $c = $c.Replace(\"[SystemSettings]`r`n\", \"[SystemSettings]`r`nr.RHIName=D3D11`r`nr.D3D12.Enable=0`r`n\"); $m = $true }; if ($m) { Set-Content -Path $base -Value $c -NoNewline } }; $ini = \"$env:LOCALAPPDATA\TFT\Saved\Config\WindowsClient\Engine.ini\"; $dir = Split-Path $ini; if (-not (Test-Path $dir)) { New-Item -ItemType Directory -Path $dir -Force | Out-Null }; if (Test-Path $ini) { Set-ItemProperty -Path $ini -Name IsReadOnly -Value $false }; $txt = \"[/Script/WindowsTargetPlatform.WindowsTargetSettings]`r`nDefaultGraphicsRHI=DefaultGraphicsRHI_DX11`r`n`r`n[SystemSettings]`r`nr.RHIName=D3D11`r`nr.D3D12.Enable=0`r`n`r`n[GameNetDriver StatelessConnectHandlerComponent]`r`nCachedClientID=4\"; Set-Content -Path $ini -Value $txt -Encoding UTF8; Set-ItemProperty -Path $ini -Name IsReadOnly -Value $true" >nul 2>&1
 
 echo.
 echo ====================================================================
