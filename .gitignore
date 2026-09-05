@@ -1,0 +1,10 @@
+# Logs & Backups
+*.log
+*.bak
+*.backup
+*~
+
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
