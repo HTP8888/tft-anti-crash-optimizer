@@ -46,10 +46,42 @@ taskkill /F /IM OverwolfLauncher.exe >nul 2>&1
 taskkill /F /IM Overwolf.exe >nul 2>&1
 taskkill /F /IM MetaTFT.exe >nul 2>&1
 
-:: 5. Khoa cau hinh DirectX 11 vao Engine cua TFT
-echo [5/5] Dang xac nhan khoa DirectX 11 on dinh cho TFT...
-powershell -NoProfile -Command "& {
+:: 5. Tu dong quet tat ca o dia (C, D, E, ...) va khoa DirectX 11 vao Engine cua TFT
+echo [5/5] Dang tu dong tim thu muc game tren moi o dia va khoa DirectX 11...
+powershell -NoProfile -ExecutionPolicy Bypass -Command "& {
+    $yamlPath = 'C:\ProgramData\Riot Games\Metadata\teamfighttactics.live\teamfighttactics.live.product_settings.yaml';
+    $tftPath = $null;
+    if (Test-Path $yamlPath) {
+        $line = Get-Content $yamlPath | Select-String 'product_install_full_path:';
+        if ($line -match 'product_install_full_path:\s*\"(.*)\"') {
+            $p = $matches[1].Replace('/', '\');
+            if (Test-Path \"$p\Engine\Config\BaseEngine.ini\") { $tftPath = $p }
+        }
+    }
+    if (-not $tftPath) {
+        $drives = (Get-CimInstance Win32_LogicalDisk -Filter 'DriveType=3').DeviceID;
+        foreach ($d in $drives) {
+            $p = \"$d\Riot Games\Teamfight Tactics\Live\";
+            if (Test-Path \"$p\Engine\Config\BaseEngine.ini\") { $tftPath = $p; break }
+        }
+    }
+    if ($tftPath) {
+        $base = Join-Path $tftPath 'Engine\Config\BaseEngine.ini';
+        $c = Get-Content $base -Raw;
+        $modified = $false;
+        if ($c -notmatch 'DefaultGraphicsRHI=DefaultGraphicsRHI_DX11') {
+            $c = $c.Replace('[/Script/WindowsTargetPlatform.WindowsTargetSettings]', \"[/Script/WindowsTargetPlatform.WindowsTargetSettings]`r`nDefaultGraphicsRHI=DefaultGraphicsRHI_DX11\");
+            $modified = $true;
+        }
+        if ($c -notmatch 'r\.RHIName=D3D11') {
+            $c = $c.Replace(\"[SystemSettings]`r`n\", \"[SystemSettings]`r`nr.RHIName=D3D11`r`nr.D3D12.Enable=0`r`n\");
+            $modified = $true;
+        }
+        if ($modified) { Set-Content -Path $base -Value $c -NoNewline }
+    }
     $iniPath = \"$env:LOCALAPPDATA\TFT\Saved\Config\WindowsClient\Engine.ini\";
+    $parent = Split-Path $iniPath;
+    if (-not (Test-Path $parent)) { New-Item -ItemType Directory -Path $parent -Force | Out-Null };
     if (Test-Path $iniPath) { Set-ItemProperty -Path $iniPath -Name IsReadOnly -Value $false };
     $iniText = \"[/Script/WindowsTargetPlatform.WindowsTargetSettings]`r`nDefaultGraphicsRHI=DefaultGraphicsRHI_DX11`r`n`r`n[SystemSettings]`r`nr.RHIName=D3D11`r`nr.D3D12.Enable=0`r`n`r`n[GameNetDriver StatelessConnectHandlerComponent]`r`nCachedClientID=4\";
     Set-Content -Path $iniPath -Value $iniText -Encoding UTF8;
@@ -58,9 +90,10 @@ powershell -NoProfile -Command "& {
 
 echo.
 echo ====================================================================
-echo   HOAN TAT! DA KHOA DIRECTX 11 VA DON SACH SHADER AMD BI LOI!
+echo   HOAN TAT! DA QUET DUONG DAN VA TOI UU CHO HE THONG THANH CONG!
 echo   Bao gom:
-echo     [v] TdrDelay = 30 giay (GPU load nang bao lau cung khong bi Windows kill).
+echo     [v] Tu dong quet tim game tren moi o dia (C:, D:, E:, ...).
+echo     [v] TdrDelay = 30 giay (GPU load nang khong bao gio bi Windows kill).
 echo     [v] Ep chuyen sang DirectX 11 on dinh (Loai bo loi D3D12).
 echo     [v] Xoa sach Shader Cache bi loi cua AMD.
 echo     [v] Giai phong RAM tu BlueStacks, WSL & VMware.
